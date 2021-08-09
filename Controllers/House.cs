@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Setl.Models;
 using Setl.Services;
 
 namespace Setl.Controllers
@@ -12,11 +13,23 @@ namespace Setl.Controllers
     [ApiController]
     public class House : ControllerBase
     {
+        private string _token = "1234567890";
         [HttpGet("[action]")]
         public async Task<IActionResult> Get(string token)
         {
             Storage storage = new Storage();
-            var houses = await storage.GetApartments();
+            if (token != _token)
+                return Unauthorized();
+            List<Apartment> houses;
+            try
+            {
+                houses = await storage.GetApartments();
+            }
+            catch
+            {
+                return NoContent();
+            }
+            
             return Ok(houses);
         }
     }
