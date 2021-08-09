@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Setl.Services;
 
 namespace Setl.Controllers
 {
@@ -14,8 +15,9 @@ namespace Setl.Controllers
         [HttpGet("[action]")]
         public async Task<IActionResult> Get(string token)
         {
-            var house = new List<string>();
-            return Ok(house);
+            Storage storage = new Storage();
+            var houses = await storage.GetApartments();
+            return Ok(houses);
         }
     }
 }
